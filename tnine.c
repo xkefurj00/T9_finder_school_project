@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #define MAX_LENGTH 101
+#define MAX_CONTACTS 200
 
 void upper_to_lower(char *current_letter){//funkce meni velka pismena na mala
 
@@ -11,7 +12,7 @@ void upper_to_lower(char *current_letter){//funkce meni velka pismena na mala
     }
 }
 
-//dsad
+
 
 void change_to_tnine(char *given){ //funkce meni znaky abecedy v kontaktu na odpovidajici cisla T9
 
@@ -54,7 +55,7 @@ if (*given=='+')
 
 }
 
-int find_contact(char list[MAX_LENGTH][MAX_LENGTH],char contacts[MAX_LENGTH][MAX_LENGTH], char *set_numbers, int number_of_lines){
+int find_contact(char list[MAX_CONTACTS][MAX_LENGTH],char contacts[MAX_CONTACTS][MAX_LENGTH], char *set_numbers, int number_of_lines){
 int length_list, length_set_number=strlen(set_numbers);
 int found = 0;
 for (int row = 0; row < number_of_lines+1; row++){
@@ -88,7 +89,7 @@ for (int column = 0; column <= length_list; column++) {
     }
 }
     if (!found) {
-        fprintf(stderr,"Not found\n");
+        fprintf(stdout,"Not found\n");
     }
     return found;
 
@@ -96,24 +97,29 @@ for (int column = 0; column <= length_list; column++) {
 
 }
 
+
 int main(int argc, char *argv[])
 {
-char list[MAX_LENGTH][MAX_LENGTH];
+char list[MAX_CONTACTS][MAX_LENGTH];
 int ch;
 int row=0, column=0, idx3=0;
 int number_of_contacts = 0;
 int number_of_lines=0;
-char contacts[MAX_LENGTH][MAX_LENGTH];
+char contacts[MAX_CONTACTS][MAX_LENGTH];
 
-
-
-    if (argc>=1)
-    {
-        
+/*
+if ((scanf("%c",&list[row][column])==EOF))
+{
+    printf("Hello");
+    fprintf(stderr,"No input\n");
+    return 1;
+}
+contacts[row][column]=list[row][column];
+column=1; */   
             
         while ((ch = getchar()) != EOF)
         {
-            
+           
             
 
 
@@ -123,7 +129,9 @@ char contacts[MAX_LENGTH][MAX_LENGTH];
             upper_to_lower(&list[row][column]);
             upper_to_lower(&contacts[row][column]);
             change_to_tnine(&list[row][column]);
-           //printf("%c", list[row][column]);
+           
+           
+          
 
           
             if (list[row][column]=='\n')
@@ -149,29 +157,55 @@ char contacts[MAX_LENGTH][MAX_LENGTH];
             
             
             
-        }//precteni souboru, pokud byl zadan v argumentu a nasledne zapsani
+        //precteni souboru, pokud byl zadan v argumentu a nasledne zapsani
 
     number_of_contacts++;
     }
-   
 
 
 
 
+row=0;   
+if (argc !=2){
+    while (row<number_of_lines)
+        {
+            printf("%s, %s\n",contacts[row], contacts[row+1]);
+            row+=2;
+        }
+}
 
+
+
+
+row=0;
  if (argc == 2)
     {
     char *set_numbers = argv[1];
-    
-   find_contact(list,contacts,set_numbers,number_of_lines);
+    while (set_numbers[row] != '\0')
+    {
+        if (!((set_numbers[row]>='0' && set_numbers[row]<='9') || (set_numbers[row]=='+')))
+        {
+        fprintf(stderr,"Error: Wrong argument.\n");
+        return 1;
+        }
+        row++;
 
     }
     
+    
+   find_contact(list,contacts,set_numbers,number_of_lines);
+
+ }
+    
+
+if (argc>2)
+{
+    fprintf(stderr,"Error: Too much arguments.\n");
+    return 1;
+}
 
 
 
-//printf("\n number of contacts: %d", number_of_contacts);
-//printf("\n number of lines: %d", number_of_lines);
 
 
 
