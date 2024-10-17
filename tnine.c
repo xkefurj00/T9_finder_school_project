@@ -70,14 +70,12 @@ for (int column = 0; column <= length_list; column++) {
             }
         }
         if (match) {
-            if (row % 2 == 0) {
-                    // Contact name is on even row, phone number on the next row
+            if (row % 2 == 0) { //tisk kontaktu, pokud se shoduje se zadanym argumentem
                     fprintf(stdout,"%s, %s\n", contacts[row], contacts[row + 1]);
                     row++; 
                     found = 1; 
                     break;
                 } else {
-                    // Contact number is on odd row, name is on the previous row
                     fprintf(stdout,"%s, %s\n", contacts[row - 1], contacts[row]);
                     found = 1; 
                     break;
@@ -106,26 +104,13 @@ int row=0, column=0, idx3=0;
 int number_of_contacts = 0;
 int number_of_lines=0;
 char contacts[MAX_CONTACTS][MAX_LENGTH];
-
-/*
-if ((scanf("%c",&list[row][column])==EOF))
-{
-    printf("Hello");
-    fprintf(stderr,"No input\n");
-    return 1;
-}
-contacts[row][column]=list[row][column];
-column=1; */   
+ 
             
         while ((ch = getchar()) != EOF)
         {
-           
-            
-
 
             list[row][column]=ch;
             contacts[row][column]=ch;
-            //contacts[row][column]=ch;
             upper_to_lower(&list[row][column]);
             upper_to_lower(&contacts[row][column]);
             change_to_tnine(&list[row][column]);
@@ -149,7 +134,7 @@ column=1; */
                 number_of_contacts++;
             }//rozdeleni kontaktu do matice
             
-            if (column> MAX_LENGTH-1)
+            if (column> MAX_LENGTH-1) //Error hlidajici maximalni delku kontaktu
             {
                 fprintf(stderr,"\nError: Contact name is too long.(Maximum 100 characters)\n");
                 return 0;
@@ -172,7 +157,7 @@ if (argc !=2){
             printf("%s, %s\n",contacts[row], contacts[row+1]);
             row+=2;
         }
-}
+}//tisk kontaktu, pokud nebyl zadan argument
 
 
 
@@ -187,7 +172,7 @@ row=0;
         {
         fprintf(stderr,"Error: Wrong argument.\n");
         return 1;
-        }
+        }//Error osetrujici zadany argument pro vyhledavani
         row++;
 
     }
@@ -202,12 +187,8 @@ if (argc>2)
 {
     fprintf(stderr,"Error: Too much arguments.\n");
     return 1;
-}
+}//Pokud je vice argumentu vypise Error
 
 
-
-
-
-
-    return 0;
+return 0;
 }
