@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 #
-# Testy pro 1. IZP projekt [2022]
-# Autor: - Ramsay#2303
+# Testy pro 1. IZP projekt [2024]
+# Autor: theramsay
 # Inspirace https://github.com/JosefKuchar/izp-projekt-1/blob/main/test.py
 # Priklady pouziti:
 #     python3 ./test.py t9search
 #     python3 ./test.py t9search --bonus 2
-
+#
+# Verze: 1.1 - Přidány testy od @toaster pro edge case na max délku řádku
+# Verze: 1.2 - Oprava `assert_equal` od @toaster, nyni se kontroluje presna shoda vsech radku
 
 import argparse
 import json
@@ -32,6 +34,10 @@ BASE_INPUT = [
     ("xxx+a+xxxxx", "213344"),
     ("Karel Spacek", "+420213333333"),
     ("aekaeeabbaeaebaeab", "892")
+]
+
+LONG_INPUT_1 = [
+    ("A" * 100, "1"),
 ]
 
 TOO_LONG_INPUT_1 = [
@@ -180,15 +186,9 @@ class Tester:
         print(PASS, msg)
 
     def assert_equal(self, output: str, expected_output: str) -> bool:
-        lines = {line.lower() for line in expected_output.rstrip().split("\n")}
-
-        for line in output.rstrip().split("\n"):
-            line = line.lower()
-
-            if line not in lines:
-                return False
-
-        return True
+        lines1 = {line.lower() for line in expected_output.rstrip().split("\n")}
+        lines2 = {line.lower() for line in output.rstrip().split("\n")}
+        return lines1 == lines2
 
     def create_input(self, input_: List[Tuple[str, str]]) -> str:
         return "".join([f"{name}\n{number}\n" for name, number in input_])
@@ -268,6 +268,8 @@ if __name__ == "__main__":
 
     t.test("Test na delku radku #1", [], TOO_LONG_INPUT_1, check_crash=True)
     t.test("Test na delku radku #2", [], TOO_LONG_INPUT_2, check_crash=True)
+    t.test("Test na delku radku #3", ["1"], LONG_INPUT_1, [1])
+    t.test("Test na delku radku #4", ["2" * 100], LONG_INPUT_1, [1])
 
     # TODO
     # t.test("Test na prazdny radek #1", [], BLANK_INPUT_1, [])

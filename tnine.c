@@ -56,8 +56,10 @@ if (*given=='+')
 }
 
 int find_contact(char list[MAX_CONTACTS][MAX_LENGTH],char contacts[MAX_CONTACTS][MAX_LENGTH], char *set_numbers, int number_of_lines){
+    
 int length_list, length_set_number=strlen(set_numbers);
 int found = 0;
+
 for (int row = 0; row < number_of_lines+1; row++){
 length_list = strlen(list[row]);
 
@@ -86,12 +88,11 @@ for (int column = 0; column <= length_list; column++) {
         }
     }
 }
-    if (!found) {
-        fprintf(stdout,"Not found\n");
-    }
-    return found;
 
-
+if (!found){
+fprintf(stdout,"Not found\n");
+}
+return found;
 
 }
 
@@ -106,19 +107,15 @@ int number_of_lines=0;
 char contacts[MAX_CONTACTS][MAX_LENGTH];
  
             
-        while ((ch = getchar()) != EOF)
-        {
+    while ((ch = getchar()) != EOF)//precteni souboru, pokud byl zadan v argumentu a nasledne ulozeni do pole
+    {
 
-            list[row][column]=ch;
-            contacts[row][column]=ch;
-            upper_to_lower(&list[row][column]);
-            upper_to_lower(&contacts[row][column]);
-            change_to_tnine(&list[row][column]);
+        list[row][column]=ch;
+        contacts[row][column]=ch;
+        upper_to_lower(&list[row][column]);
+        upper_to_lower(&contacts[row][column]);
+        change_to_tnine(&list[row][column]);
            
-           
-          
-
-          
             if (list[row][column]=='\n')
             {
                 list[row][column] = '\0';
@@ -137,14 +134,17 @@ char contacts[MAX_CONTACTS][MAX_LENGTH];
             if (column> MAX_LENGTH-1) //Error hlidajici maximalni delku kontaktu
             {
                 fprintf(stderr,"\nError: Contact name is too long.(Maximum 100 characters)\n");
-                return 0;
+                return 1;
             }
-            
-            
-            
-        //precteni souboru, pokud byl zadan v argumentu a nasledne zapsani
+            if (row==MAX_CONTACTS) //Error hlidaji maximalni pocet kontaktu(100)
+            {
+                fprintf(stderr, "\n Error: Too much contacts.(Maximum is 100)");
+                return 1;
+            }
+              
 
     number_of_contacts++;
+    
     }
 
 
@@ -163,8 +163,7 @@ if (argc !=2){
 
 
 row=0;
- if (argc == 2)
-    {
+ if (argc == 2){
     char *set_numbers = argv[1];
     while (set_numbers[row] != '\0')
     {
@@ -176,7 +175,6 @@ row=0;
         row++;
 
     }
-    
     
    find_contact(list,contacts,set_numbers,number_of_lines);
 
